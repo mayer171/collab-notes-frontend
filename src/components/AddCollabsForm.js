@@ -13,16 +13,11 @@ const styles = theme => ({
     },
 })
 
-class NewNoteForm extends Component{
+class AddCollabForm extends Component{
     constructor(props){
         super(props)
         this.state = {
-            title: '',
-            text: '',
-            owner: '',
-            authorizedEditors: {},
-            createdAt: null,
-            editedAt: null,
+            addedCollab: '',
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -34,12 +29,13 @@ class NewNoteForm extends Component{
         })
     }
 
+    //TODO Set other properties here 
     handleSubmit(e){
         console.log(this.props.baseUrl)
         e.preventDefault()
         fetch(this.props.baseUrl, {
             method: 'POST',
-            body: JSON.stringify({title: this.state.title}),
+            body: JSON.stringify({authorizedEditors: this.state.authorizedEditors}),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -54,11 +50,11 @@ class NewNoteForm extends Component{
     render () {
         return(
             <form onSubmit={(e)=>this.handleSubmit(e)}>
-                <Input placeholder='Enter Note Title' type='text' id='title' name='title' onChange={(e)=>this.handleChange(e)} value={this.state.title} ></Input>
-                <Button type='submit'>Create New Note</Button>
+                <Input placeholder='Enter Collaborator' type='text' id='addedCollab' name='addedCollab' onChange={(e)=>this.handleChange(e)} value={this.state.title} ></Input>
+                <Button type='submit'>Add</Button>
             </form>
         )
     }
 }
 
-export default withStyles(styles, {withTheme: true})(NewNoteForm)
+export default withStyles(styles, {withTheme: true})(AddCollabForm)

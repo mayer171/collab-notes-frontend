@@ -5,7 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Button } from '@material-ui/core';
-import { Paper } from '@material-ui/core'
+import { Paper } from '@material-ui/core';
+import { LogIn } from '../helpers/userSessionHelpers';
 
 
 //Material-UI Styling
@@ -28,16 +29,35 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
+let username = ''
+let password = ''
 export default function SignIn() {
 //Use Styles
 const classes = useStyles();
 
 function handleChange(e) {
-    console.log(e.target)
+    if(e.target.id === 'username'){
+        username = e.target.value
+    } else if(e.target.id === 'password'){
+        password = e.target.value
+    }
+    console.log(e.target.value)
 }
+
 function handleSubmit(e) {
     e.preventDefault();
-    alert('Saving State to Mongo...(not really)')
+    const creds = {
+        username: username,
+        password: password
+    }
+    LogIn(creds)
+        .then( res => {
+            if(res){
+                console.log('do whatever')
+            }
+        })
+    
 }
   return (
     <Container component='main' maxWidth='xs'>
@@ -78,7 +98,7 @@ function handleSubmit(e) {
                     color='primary'
                     className={classes.submit}
                 >
-                    Sign-up
+                    Sign-In
                 </Button>
             </div>
         </form>

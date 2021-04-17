@@ -2,16 +2,15 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
-import NewNoteForm from './NewNoteForm';
-import {Paper} from '@material-ui/core'
+import AddCollabForm from './AddCollabsForm'
 
 const useStyles = makeStyles((theme) => ({
-  form: {
+  typography: {
     padding: theme.spacing(2),
   },
 }));
 
-export default function AddNotePopover() {
+export default function AddCollabsPopover() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -29,7 +28,7 @@ export default function AddNotePopover() {
   return (
     <div>
       <Button aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
-        + Add New Note
+        Add a Collaborator 
       </Button>
       <Popover
         id={id}
@@ -45,9 +44,7 @@ export default function AddNotePopover() {
           horizontal: 'center',
         }}
       >
-        <Paper elevation={3} className={classes.form}>
-            <NewNoteForm />
-        </Paper>
+        <AddCollabForm />
       </Popover>
     </div>
   );

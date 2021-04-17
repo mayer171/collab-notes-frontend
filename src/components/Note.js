@@ -1,18 +1,35 @@
 import React, { Component } from 'react'
 import { TextareaAutosize } from '@material-ui/core'
-import { Input } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import { withStyles } from '@material-ui/core'
 import { Container } from '@material-ui/core'
 import { Paper } from '@material-ui/core'
+import AddCollabsPopover from './AddCollabsPopover'
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+
 
 const styles = theme => ({
     textarea: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        width: '100%',
-        margin: theme.spacing(2, 'auto'),
+        width: '99%',
+        border:'none',
+        overflow: 'auto',
+        outline: 'none',
+    
+        
     },
+    toolbar: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+
+    },
+    note: {
+        margin: '10px'
+    }
 }) 
 
 class MainNote extends Component {
@@ -26,13 +43,17 @@ class MainNote extends Component {
             createdAt: null,
             editedAt: null,
         };
-        this.handleSubmit = this.handelSubmit.bind(this);
+        this.handleSaveSubmit = this.handelSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
+
+    
     handleChange(e) {
         console.log(e.target)
         this.setState({value: e.target.value})
     }
+
+    //Update route 
     handelSubmit(e) {
         e.preventDefault();
         alert('Saving State to Mongo...(not really)')
@@ -41,9 +62,15 @@ class MainNote extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <Container maxWidth='sm'> 
+            <Container className={classes.note} maxWidth='sm'> 
                 <form onSubmit={this.handleSubmit}>
-                    <Paper>
+                    <Paper className={classes.paper}>
+                        <AppBar position="static">
+                            <Toolbar variant='dense' className={classes.toolbar}>
+                                <AddCollabsPopover />
+                                <Button  variant="contained" color="primary"> Save Note</Button>
+                            </Toolbar>
+                        </AppBar>
                         <TextareaAutosize
                             className={classes.textarea}
                             flexgrow={1}
@@ -52,7 +79,6 @@ class MainNote extends Component {
                             onChange={this.handleChange}>
                         </TextareaAutosize>
                     </Paper>
-                    <Input type='submit' value='Save Note'></Input>
                 </form>
             </Container>
         )

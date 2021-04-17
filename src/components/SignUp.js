@@ -28,11 +28,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function SignIn() {
+export default function SignUp() {
   const classes = useStyles();
 
 function handleChange(e) {
-    console.log(e.target)
+    console.log(e.target.value)
 }
 function handleSubmit(e) {
     e.preventDefault();
@@ -42,7 +42,7 @@ function handleSubmit(e) {
     <Container component='main' maxWidth='xs'>
     <Paper className={classes.card} elevation={3}>
     <Typography component='h1'>
-        Sign In
+        Sign Up
     </Typography>
     <form className={classes.form} onSubmit={handleSubmit}>
         <div className={classes.paper}>
@@ -68,20 +68,19 @@ function handleSubmit(e) {
                         id="password"
                     />
                 </Grid>
-            </Grid>
-            
-            <Button
-                type='submit'
-                fullWidth
-                variant='contained'
-                color='primary'
-                className={classes.submit}
-            >
-                Sign-up
-            </Button>
-        </div>
-    </form>
-    </Paper>
-</Container>     
+                </Grid>
+                <Button
+                    type='submit'
+                    fullWidth
+                    variant='contained'
+                    color='primary'
+                    className={classes.submit}
+                >
+                    Sign-up
+                </Button>
+            </div>
+        </form>
+        </Paper>
+    </Container>     
   );
 }

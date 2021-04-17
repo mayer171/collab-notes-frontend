@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react'
 import MainNote from './components/Note';
-import SignIn from './components/SignUp'
-import SignUp from './components/SignIn'
+import SignIn from './components/SignIn'
+import SignUp from './components/SignUp'
 import Header from './components/Header'
 import './App.css';
 
@@ -13,16 +13,24 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 
- export default function App(){
-  
+ export default class App extends Component{
+   constructor(props) {
+     super(props)
+     this.state = {
+       currentUser: '',
+       isAuthenticated: false,
+     }
+   }
+  render(){
     return (
     <div className="App">
       <Header />
       <SignIn />
-      <SignUp />
       <MainNote />
     </div>
-  );
+  );}
 }
 
 
+//<SignIn />
+//<SignUp />

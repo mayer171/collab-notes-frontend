@@ -2,7 +2,7 @@ const LogIn = async (body, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
   const request = {
     method: 'POST',
     mode: 'cors',
-    credendtials: 'include',
+    credentials: 'include',
     headers: {
       'Content-Type' : 'application/json',
 
