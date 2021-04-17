@@ -5,7 +5,6 @@ import { withStyles } from '@material-ui/core'
 import { Container } from '@material-ui/core'
 import { Paper } from '@material-ui/core'
 
-
 const styles = theme => ({
     textarea: {
         display: 'flex',
@@ -17,11 +16,16 @@ const styles = theme => ({
 }) 
 
 class MainNote extends Component {
-    
     constructor(props){
         super(props);
-        this.state = {value: ''};
-
+        this.state = {
+            title: '',
+            text: '',
+            owner: '',
+            authorizedEditors: [],
+            createdAt: null,
+            editedAt: null,
+        };
         this.handleSubmit = this.handelSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
@@ -36,14 +40,13 @@ class MainNote extends Component {
 
     render() {
         const { classes } = this.props;
-        
         return (
             <Container maxWidth='sm'> 
                 <form onSubmit={this.handleSubmit}>
                     <Paper>
                         <TextareaAutosize
                             className={classes.textarea}
-                            flexGrow={1}
+                            flexgrow={1}
                             rowsMin={15}
                             value={this.state.value} 
                             onChange={this.handleChange}>

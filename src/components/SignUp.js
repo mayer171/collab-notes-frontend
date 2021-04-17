@@ -39,7 +39,6 @@ function handleSubmit(e) {
     alert('Saving State to Mongo...(not really)')
 }
   return (
-      
     <Container component='main' maxWidth='xs'>
     <Paper className={classes.card} elevation={3}>
     <Typography component='h1'>
@@ -83,7 +82,6 @@ function handleSubmit(e) {
         </div>
     </form>
     </Paper>
-</Container>
-       
+</Container>     
   );
 }
