@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import MainNote from './components/Note';
-import SignIn from './components/SignIn'
-import SignUp from './components/SignUp'
+import SignInPage from './SignInPage'
 import Header from './components/Header'
 import './App.css';
+
 
 let baseUrl = ''
 if (process.env.NODE_ENV === 'development') {
@@ -17,20 +17,33 @@ if (process.env.NODE_ENV === 'development') {
    constructor(props) {
      super(props)
      this.state = {
+       isLoggedIn: false,
        currentUser: '',
-       isAuthenticated: false,
      }
    }
+   setGlobalUser = (bool, username) => {
+     this.setState({
+       isLoggedIn: bool,
+       currentUser: username
+     })
+    }
+    
   render(){
+    const isLoggedIn = this.state.isLoggedIn
     return (
     <div className="App">
-      <Header />
-      <SignIn />
-      <MainNote />
+      {isLoggedIn 
+      ?
+        <div>
+        <Header />
+        <MainNote />
+        </div>
+      :<SignInPage 
+      setUser={this.setGlobalUser}
+    />
+      }
     </div>
   );}
 }
 
 
-//<SignIn />
-//<SignUp />

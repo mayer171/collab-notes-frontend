@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Input } from '@material-ui/core'
 import { withStyles } from '@material-ui/core'
 import { Button } from '@material-ui/core'
+import { PostNote } from '../helpers/noteHelpers'
 
 const styles = theme => ({
     textarea: {
@@ -18,11 +19,6 @@ class NewNoteForm extends Component{
         super(props)
         this.state = {
             title: '',
-            text: '',
-            owner: '',
-            authorizedEditors: {},
-            createdAt: null,
-            editedAt: null,
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -35,21 +31,20 @@ class NewNoteForm extends Component{
     }
 
     handleSubmit(e){
-        console.log(this.props.baseUrl)
+        console.log(this.state.title)
         e.preventDefault()
-        fetch(this.props.baseUrl, {
-            method: 'POST',
-            body: JSON.stringify({title: this.state.title}),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then( res => {
-            return res.json()
-        }).then( data => {
-            this.setState({
-                title: '',
+        const newNote = {
+            title: this.state.title
+        }
+        PostNote(newNote)
+            .then(res => {
+                if(res){
+                    console.log(res)
+                }
             })
-        }).catch(error => console.error({'Error': error}))
+        this.setState({
+            title: '',
+        })
     }
     render () {
         return(

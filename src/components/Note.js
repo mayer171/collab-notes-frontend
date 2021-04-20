@@ -56,7 +56,7 @@ class MainNote extends Component {
     //Update route 
     handelSubmit(e) {
         e.preventDefault();
-        alert('Saving State to Mongo...(not really)')
+        
     }
 
     render() {

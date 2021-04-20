@@ -2,7 +2,7 @@ const PostNote = async (body, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
   const request = {
     method: 'POST',
     mode: 'cors',
-    credendtials: 'include',
+    credentials: 'include',
     headers: {
       'Content-Type' : 'application/json',
 
@@ -18,7 +18,7 @@ const GetByUsername = async (username, baseUrl = process.env.REACT_APP_BACKEND_U
   const request = {
     method: 'GET',
     mode: 'cors',
-    credendtials: 'include',
+    credentials: 'include',
   };
 
   const response = await fetch(baseUrl + "allby/" + username);

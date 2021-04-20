@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Button } from '@material-ui/core';
 import { Paper } from '@material-ui/core';
-import { LogIn } from '../helpers/userSessionHelpers';
+import { LogIn } from '../../helpers/userSessionHelpers';
 
 
 //Material-UI Styling
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 let username = ''
 let password = ''
-export default function SignIn() {
+export default function SignIn(props) {
 //Use Styles
 const classes = useStyles();
 
@@ -42,7 +42,7 @@ function handleChange(e) {
     } else if(e.target.id === 'password'){
         password = e.target.value
     }
-    console.log(e.target.value)
+    
 }
 
 function handleSubmit(e) {
@@ -54,10 +54,10 @@ function handleSubmit(e) {
     LogIn(creds)
         .then( res => {
             if(res){
-                console.log('do whatever')
+                console.log(res)
+                props.setUser(true, creds.username)
             }
         })
-    
 }
   return (
     <Container component='main' maxWidth='xs'>
@@ -104,7 +104,5 @@ function handleSubmit(e) {
         </form>
         </Paper>
     </Container>
-
-   
   );
 }
