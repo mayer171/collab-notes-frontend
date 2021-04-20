@@ -11,7 +11,9 @@ const LogIn = async (body, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
   };
 
   const response = await fetch(baseUrl + "sessions", request);
-  return await response.json();
+  const parsed = await response.json();
+  parsed.success = response.ok;
+  return parsed;
 }
 
 export { LogIn }
