@@ -5,13 +5,16 @@ const PostNote = async (body, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
     credentials: 'include',
     headers: {
       'Content-Type' : 'application/json',
-
     },
+
     body: JSON.stringify(body),
   };
 
   const response = await fetch(baseUrl + "notes", request);
-  return await response.json();
+  const success = response.ok;
+  const parsed = await response.json();
+  parsed.success = success;
+  return parsed;
 }
 
 const GetByUsername = async (username, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
@@ -22,7 +25,10 @@ const GetByUsername = async (username, baseUrl = process.env.REACT_APP_BACKEND_U
   };
 
   const response = await fetch(baseUrl + "allby/" + username);
-  return await response.json();
+  const success = response.ok;
+  const parsed = await response.json();
+  parsed.success = success;
+  return parsed;
 }
 
 export { PostNote, GetByUsername }
