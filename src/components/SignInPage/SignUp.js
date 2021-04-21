@@ -10,6 +10,7 @@ import { Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     card: {
+        marginTop: theme.spacing(8),
         padding: '10px'
     },
     paper: {
@@ -78,6 +79,7 @@ function handleSubmit(e) {
                 >
                     Sign-up
                 </Button>
+                
             </div>
         </form>
         </Paper>

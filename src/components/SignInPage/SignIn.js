@@ -9,9 +9,11 @@ import { Paper } from '@material-ui/core';
 import { LogIn } from '../../helpers/userSessionHelpers';
 
 
+
 //Material-UI Styling
 const useStyles = makeStyles((theme) => ({
     card: {
+        marginTop: theme.spacing(8),
         padding: '10px'
     },
     paper: {
@@ -53,13 +55,13 @@ function handleSubmit(e) {
     LogIn(creds)
         .then( res => {
             if(res.success){
-                console.log(res.success)
                 props.setUser(true, creds.username)
             }
         })
 }
   return (
     <Container component='main' maxWidth='xs'>
+        
         <Paper className={classes.card} elevation={3}>
         <Typography component='h1'>
             Sign In
@@ -99,9 +101,11 @@ function handleSubmit(e) {
                 >
                     Sign-In
                 </Button>
+
             </div>
         </form>
         </Paper>
+        
     </Container>
   );
 }

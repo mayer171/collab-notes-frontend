@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import MainNote from './components/Note';
+import UserPage from './UserPage'
 import SignInPage from './SignInPage'
 import Header from './components/Header'
 import './App.css';
@@ -45,7 +45,7 @@ if (process.env.NODE_ENV === 'development') {
         <Header 
           signOut = {this.signOut}
         />
-        <MainNote 
+        <UserPage
           currentUser = {this.state.currentUser}
         />
         </div>

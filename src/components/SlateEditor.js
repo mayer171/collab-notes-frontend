@@ -105,7 +105,7 @@ const SlateEditor = (props) => {
   }
 
   return (
-    <div style = {{textAlign: "left", width: 400, height: 300, background: "#eee", padding: "1em"}}>
+    <div style = {{textAlign: "left", height: 300, background: "#eee", padding: "1em"}}>
     <Slate
     editor={editor}
     value={value}

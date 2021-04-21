@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { TextareaAutosize } from '@material-ui/core'
 import { Button } from '@material-ui/core'
 import { withStyles } from '@material-ui/core'
 import { Container } from '@material-ui/core'
@@ -10,17 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import SlateEditor from './SlateEditor'
 
 const styles = theme => ({
-    textarea: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '99%',
-        border:'none',
-        overflow: 'auto',
-        outline: 'none',
     
-        
-    },
     toolbar: {
         display: 'flex',
         flexDirection: 'row',
