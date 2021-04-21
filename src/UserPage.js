@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Note from './components/Note'
 import { withStyles } from '@material-ui/core'
-import { GetByUsername } from './helpers/noteHelpers'
-import { GetSharedByUsername } from './helpers/noteHelpers'
+import { GetUserOwnNotes } from './helpers/noteHelpers'
+import { GetUserSharedNotes } from './helpers/noteHelpers'
 
 const styles = theme => ({
     textarea: {
@@ -27,7 +27,7 @@ class UserPage extends Component{
         }
 
     componentDidMount(){
-        GetByUsername(this.props.currentUser)
+        GetUserOwnNotes(this.props.currentUser)
         .then(res => {
             if(res){
                 this.setState({
@@ -37,7 +37,7 @@ class UserPage extends Component{
             }
         }
     )
-    .then(GetSharedByUsername(this.props.currentUser)
+    .then(GetUserSharedNotes(this.props.currentUser)
     .then(res => {
         if(res){
             console.log(res.data)
@@ -49,8 +49,8 @@ class UserPage extends Component{
         const { classes } = this.props
         return(
             <div className={classes.textarea}>
-                {this.state.noteSelected 
-                ? <Note 
+                {this.state.noteSelected
+                ? <Note
                     noteId = {this.state.selectedNoteId}
                 />
             :

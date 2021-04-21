@@ -1,6 +1,6 @@
 // Editor pieced together from up and running guide on Slate.js docs
 // in adition to ideas from Ben Awad's Google Docs Clone project
-// • https://github.com/benawad/mini-google-docs-clone/blob/1_syncing_operations
+// · https://github.com/benawad/mini-google-docs-clone/blob/1_syncing_operations
 
 // Import React dependencies.
 import React, { useEffect, useMemo, useState, useRef } from 'react';
@@ -12,16 +12,19 @@ import { createEditor, Editor } from 'slate';
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react';
 
-// connect to ws
-// TODO this has to connect with a param for the document it wants
-const ws = new WebSocket('ws://localhost:3001');
-const editorID = Date.now();
 
+const editorID = `${Math.trunc(Date.now() * Math.random() * 500)}`.substring(-8);
+
+const documentID = "60778ef8f7c26040fd6de5e1";
 
 const SlateEditor = (props) => {
 
   const editor = useMemo(() => withReact(createEditor()), []);
+
+  const socket = useRef(null);
+
   const local = useRef(true);
+
 
   // This is the initial value of the Editor -- this can be passed from
   // parent as props
@@ -32,38 +35,51 @@ const SlateEditor = (props) => {
     },
   ]);
 
+  const connectionString = () => {
+    return `ws://localhost:3001/` + `docID=${documentID}/` + `edID=${editorID}`;
+  }
 
-  // This block runs ONE TIME -- to bind functions to the event listeners
-  useEffect(() => {
 
-    ws.onopen = () => {
-      console.log('web socket connection made')
+  const wsConnect = () => {
+    socket.current = new WebSocket(connectionString());
+
+    socket.current.onopen = () => {
+      console.log('web socket connection made');
     }
 
-    ws.onclose = () => {
-      console.log('disconnected')
+    socket.current.onclose = () => {
+      console.log('disconnected - trying to reconnect');
+      setTimeout(() => {
+        wsConnect();
+      }, 1000)
     }
 
-    ws.onmessage = (msg) => {
+    socket.current.onmessage = (msg) => {
 
-      const data = JSON.parse(msg.data).data;
+      const data = JSON.parse(msg.data);
 
-      if (editorID !== data.editorID) {
+      if (editorID !== data?.editorID) {
         console.log('GOT OPS')
         Editor.withoutNormalizing(editor, () => {
-          data.ops.forEach(op => {
+          data?.ops.forEach(op => {
             local.current = false;
             editor.apply(op);
           });
         });
       }
     }
+  }
+
+
+  // This block runs whebn component mounts bind functions to the event listeners
+  useEffect(() => {
+    wsConnect();
   }, [])
 
   // Send web sockets
   const sendWs = (msg) => {
     try {
-      ws.send(JSON.stringify(msg));
+      socket.current.send(JSON.stringify(msg));
     } catch (e) {
       console.log(e);
     }
@@ -105,7 +121,8 @@ const SlateEditor = (props) => {
   }
 
   return (
-    <div style = {{textAlign: "left", height: 300, background: "#eee", padding: "1em"}}>
+
+    <div style = {{textAlign: "left", background: "#eee", padding: "1em", width: "100%", height: "100%"  }}>
     <Slate
     editor={editor}
     value={value}

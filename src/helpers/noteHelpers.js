@@ -1,48 +1,92 @@
+import { buildReq, parseRes } from './utils';
+
+// –––––––––––––––––––––––––––––––––––––––––
+// Create a new note on DB
+// –––––––––––––––––––––––––––––––––––––––––
 const PostNote = async (body, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
-  const request = {
-    method: 'POST',
-    mode: 'cors',
-    credentials: 'include',
-    headers: {
-      'Content-Type' : 'application/json',
-    },
-
-    body: JSON.stringify(body),
-  };
-
-  const response = await fetch(baseUrl + "notes", request);
-  const success = response.ok;
-  const parsed = await response.json();
-  parsed.success = success;
-  return parsed;
+  const route = baseUrl + 'notes/';
+  const request = buildReq(body, 'POST');
+  const response = await fetch(route, request);
+  return await parseRes(response);
 }
 
-const GetByUsername = async (username, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
-  const request = {
-    method: 'GET',
-    mode: 'cors',
-    credentials: 'include',
-  };
-
-  const response = await fetch(baseUrl + 'notes/allby/' + username);
-  const success = response.ok;
-  const parsed = await response.json();
-  parsed.success = success;
-  return parsed;
+// –––––––––––––––––––––––––––––––––––––––––
+// Get a note from DB
+// –––––––––––––––––––––––––––––––––––––––––
+const GetNote = async (noteID, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
+  const route = baseUrl + "notes/" + noteID;
+  const request = buildReq();
+  const response = await fetch(route, request);
+  return await parseRes(response);
 }
 
-const GetSharedByUsername = async (username, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
-  const request = {
-    method: 'GET',
-    mode: 'cors',
-    credentials: 'include',
-  };
-
-  const response = await fetch(baseUrl + 'notes/allshared/' + username);
-  const success = response.ok;
-  const parsed = await response.json();
-  parsed.success = success;
-  return parsed;
+// –––––––––––––––––––––––––––––––––––––––––
+// Update a new note on DB
+// –––––––––––––––––––––––––––––––––––––––––
+const UpdateNote = async (noteID, body, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
+  const route = baseUrl + 'notes/' + noteID;
+  const request = buildReq(body, 'PUT');
+  const response = await fetch(route, request);
+  return await parseRes(response);
 }
 
-export { PostNote, GetByUsername, GetSharedByUsername }
+// –––––––––––––––––––––––––––––––––––––––––
+// Delete
+// –––––––––––––––––––––––––––––––––––––––––
+const DeleteNote = async (noteID, body, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
+  const route = baseUrl + 'notes/' + noteID;
+  const request = buildReq(null, 'DELETE');
+  const response = await fetch(route, request);
+  return await parseRes(response);
+}
+
+// –––––––––––––––––––––––––––––––––––––––––
+// Get a user's owned notes
+// –––––––––––––––––––––––––––––––––––––––––
+const GetUserOwnNotes = async (username, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
+  const route = baseUrl + 'notes/allby/' + username;
+  const request = buildReq();
+  const response = await fetch(route, request);
+  return await parseRes(response);
+}
+
+// –––––––––––––––––––––––––––––––––––––––––
+// Get a user's shared notes
+// –––––––––––––––––––––––––––––––––––––––––
+const GetUserSharedNotes = async (username, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
+  const route = baseUrl + 'notes/allshared/' + username;
+  const request = buildReq();
+  const response = await fetch(route, request);
+  return await parseRes(response);
+}
+
+// –––––––––––––––––––––––––––––––––––––––––
+// Add a collaborator to a note
+// –––––––––––––––––––––––––––––––––––––––––
+const AddCollaborator = async (noteID, username, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
+  const route = baseUrl + 'notes/' + noteID;
+  const request = buildReq({ username: username, operation: 'add' }, 'PATCH');
+  const response = await fetch(route, request);
+  return await parseRes(response);
+}
+
+// –––––––––––––––––––––––––––––––––––––––––
+// Add a collaborator to a note
+// –––––––––––––––––––––––––––––––––––––––––
+const RemoveCollaborator = async (noteID, username, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
+  const route = baseUrl + 'notes/' + noteID;
+  const request = buildReq({ username: username, operation: 'remove' }, 'PATCH');
+  const response = await fetch(route, request);
+  return await parseRes(response);
+}
+
+export {
+  PostNote,
+  GetNote,
+  UpdateNote,
+  DeleteNote,
+  GetUserOwnNotes,
+  GetUserSharedNotes,
+  AddCollaborator,
+  RemoveCollaborator,
+}
