@@ -7,7 +7,7 @@ import { Paper } from '@material-ui/core'
 import AddCollabsPopover from './AddCollabsPopover'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-
+import SlateEditor from './SlateEditor'
 
 const styles = theme => ({
     textarea: {
@@ -56,9 +56,9 @@ class MainNote extends Component {
     //Update route 
     handelSubmit(e) {
         e.preventDefault();
-        
     }
-
+    
+    
     render() {
         const { classes } = this.props;
         return (
@@ -71,18 +71,12 @@ class MainNote extends Component {
                                 <Button  variant="contained" color="primary"> Save Note</Button>
                             </Toolbar>
                         </AppBar>
-                        <TextareaAutosize
-                            className={classes.textarea}
-                            flexgrow={1}
-                            rowsMin={15}
-                            value={this.state.value} 
-                            onChange={this.handleChange}>
-                        </TextareaAutosize>
+                        <SlateEditor />
                     </Paper>
                 </form>
             </Container>
         )
-    }
+    }   
 }
 
 export default withStyles(styles, {withTheme: true})(MainNote)

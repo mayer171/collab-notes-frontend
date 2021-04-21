@@ -27,6 +27,13 @@ if (process.env.NODE_ENV === 'development') {
        currentUser: username
      })
     }
+    signOut = () => {
+      this.setState({
+        isLoggedIn: false,
+        currentUser: ''
+
+      })
+    }
     
   render(){
     const isLoggedIn = this.state.isLoggedIn
@@ -35,12 +42,16 @@ if (process.env.NODE_ENV === 'development') {
       {isLoggedIn 
       ?
         <div>
-        <Header />
-        <MainNote />
+        <Header 
+          signOut = {this.signOut}
+        />
+        <MainNote 
+          currentUser = {this.state.currentUser}
+        />
         </div>
       :<SignInPage 
-      setUser={this.setGlobalUser}
-    />
+        setUser={this.setGlobalUser}
+      />
       }
     </div>
   );}

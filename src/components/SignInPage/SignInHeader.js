@@ -14,8 +14,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function SignInHeader(){
+export default function SignInHeader(props){
     const classes = useStyles()
+    let buttonText = ''
+    if(props.signInState !== 'true'){
+        buttonText = 'Log In'
+    } else {
+        buttonText = 'Sign Up'
+    }
+
+    
     return(
     <AppBar position="static">
         <Toolbar className={classes.toolbar}  >
@@ -23,7 +31,7 @@ export default function SignInHeader(){
                 <Typography> Collab-Notes</Typography>
             </Box>
             <Box>
-                <Button color="inherit"> Log Out</Button>
+                <Button color="inherit" onClick={() => props.toggleSignIn(props.signInState)}>{buttonText}</Button>
             </Box>
         </Toolbar>
     </AppBar>

@@ -16,30 +16,40 @@ if (process.env.NODE_ENV === 'development') {
    constructor(props) {
      super(props)
      this.state = {
-       isAuthenticated: '',
-       currentUser: '',
-       signUpState: '',
+
+       currentUser: this.props.globalUser,
+       inSignUpState: true,
      }
    }
-   setGlobalUser = (isLoggedIn, username) => {
-     this.setState({
-       isAuthenticated: isLoggedIn,
-       currentUser: username
-     })
+   
+
+    toggleSignIn = (currentBool) => {
+      if(currentBool === true){
+        this.setState({
+          inSignUpState: false
+        })
+      } else {
+        this.setState({
+          inSignUpState: true
+      })
     }
+  }
     
   render(){
     return (
     <div className="SignInPage">
-      <SignInHeader />
-      <SignIn 
-        setUser = {this.setGlobalUser}
-        signUpState = {this.state.signUpState}
+      <SignInHeader 
+        signInState = {this.state.inSignUpState}
+        toggleSignIn = {this.toggleSignIn}
       />
-      <SignUp 
-        setUser = {this.setGlobalUser}
-        signUpState = {this.state.signUpState}
+      {this.state.inSignUpState 
+      ?<SignUp 
+        setUser = {this.props.setUser}  
       />
+      :<SignIn 
+        setUser = {this.props.setUser}  
+      />
+      }
     </div>
   );}
 }

@@ -44,7 +44,6 @@ function handleChange(e) {
     }
     
 }
-
 function handleSubmit(e) {
     e.preventDefault();
     const creds = {
@@ -53,8 +52,8 @@ function handleSubmit(e) {
     }
     LogIn(creds)
         .then( res => {
-            if(res){
-                console.log(res)
+            if(res.success){
+                console.log(res.success)
                 props.setUser(true, creds.username)
             }
         })

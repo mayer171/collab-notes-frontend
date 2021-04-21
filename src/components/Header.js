@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function Header(){
+export default function Header(props){
     const classes = useStyles()
     return(
     <AppBar position="static">
@@ -27,7 +27,7 @@ export default function Header(){
                 <AddNotePopover />
             </Box>
             <Box>
-                <Button color="inherit"> Log Out</Button>
+                <Button color="inherit" onClick={()=>props.signOut()}> Log Out</Button>
             </Box>
         </Toolbar>
     </AppBar>
