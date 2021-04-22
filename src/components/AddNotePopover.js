@@ -3,7 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
 import NewNoteForm from './NewNoteForm';
-import {Paper} from '@material-ui/core'
+import {Paper} from '@material-ui/core';
+
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -29,7 +30,7 @@ export default function AddNotePopover(props) {
   return (
     <div>
       <Button aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
-        + Add New Note
+        + Note
       </Button>
       <Popover
         id={id}

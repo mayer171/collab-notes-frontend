@@ -46,6 +46,7 @@ export default function AddCollabsPopover(props) {
       >
         <AddCollabForm 
          noteID={props.noteID}
+         collaborators={props.collaborators}
         />
       </Popover>
     </div>

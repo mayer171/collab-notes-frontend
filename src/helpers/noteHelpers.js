@@ -71,7 +71,7 @@ const AddCollaborator = async (noteID, username, baseUrl = process.env.REACT_APP
 }
 
 // –––––––––––––––––––––––––––––––––––––––––
-// Add a collaborator to a note
+// Remove a collaborator from a note
 // –––––––––––––––––––––––––––––––––––––––––
 const RemoveCollaborator = async (noteID, username, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
   const route = baseUrl + 'notes/' + noteID;

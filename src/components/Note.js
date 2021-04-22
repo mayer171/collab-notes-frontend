@@ -91,7 +91,6 @@ class MainNote extends Component {
         })
     }
 
-
     render() {
         const { classes } = this.props;
         return (
@@ -101,10 +100,14 @@ class MainNote extends Component {
                         <AppBar position="static">
                             <Toolbar variant='dense' className={classes.toolbar}>
                                 {this.state.isAuthor
-                                ?<AddCollabsPopover noteID={this.props.noteID}/>
-                                :<div></div>
+                                ?
+                                    <AddCollabsPopover 
+                                        noteID={this.props.noteID}
+                                        collaborators={this.props.collaborators}
+                                        />
+                                :
+                                    <div></div>
                                 }
-                                
                                 <Button  variant="contained" color="primary" onClick={this.handleSaveNote}> Save Note</Button>
                             </Toolbar>
                         </AppBar>
