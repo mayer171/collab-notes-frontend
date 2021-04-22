@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -12,7 +12,7 @@ import { SignUp } from '../../helpers/userSessionHelpers'
 const useStyles = makeStyles((theme) => ({
     card: {
         marginTop: theme.spacing(8),
-        padding: '10px'
+        padding: theme.spacing(4)
     },
     paper: {
         marginTop: theme.spacing(8),
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
     form: {
         width: '100%',
-        marginBottom: theme.spacing(2),
+        marginBottom: theme.spacing(1),
     },
     submit: {
         margin: theme.spacing(1, 0, 1),
@@ -31,39 +31,54 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function SignUpForm(props) {
-  const classes = useStyles();
-  const username = useRef('')
-  const password = useRef('')
+    const classes = useStyles();
+    const username = useRef('');
+    const password = useRef('');
+    const confirmPassword = useRef('');
 
-function handleChange(e) {
-    if(e.target.id === 'username'){
-        username.current = e.target.value
-    } else if(e.target.id === 'password'){
-        password.current = e.target.value
+    const [ error, setError ] = useState('');
+
+    function handleChange(e) {
+        if (e.target.id === 'username'){
+            username.current = e.target.value
+        } else if (e.target.id === 'password'){
+            password.current = e.target.value
+        } else if (e.target.id === 'confirm-password') {
+            confirmPassword.current = e.target.value
+        }
     }
-}
 function handleSubmit(e) {
     e.preventDefault();
+
+    if(password.current !== confirmPassword.current) {
+      setError('Passwords must match.');
+      return;
+    }
+
     const creds = {
         username: username.current,
         password: password.current
     }
+
     SignUp(creds)
         .then( res => {
+          console.log(res);
             if(res.success){
                 props.setUser(true, creds.username)
+            } else {
+              setError(res.message);
             }
         })
 }
   return (
     <Container component='main' maxWidth='xs'>
-    <Paper className={classes.card} elevation={3}>
-    <Typography component='h1'>
-        Sign Up
+    <Paper className={classes.card} elevation={2}>
+    <Typography variant='h4' style={{paddingTop: '1em'}}>
+        Create Account
     </Typography>
     <form className={classes.form} onSubmit={handleSubmit}>
         <div className={classes.paper}>
-            <Grid container spacing={2}>
+            <Grid container spacing={4}>
                 <Grid item xs={12}>
                     <TextField
                         onChange={handleChange}
@@ -85,20 +100,37 @@ function handleSubmit(e) {
                         id="password"
                     />
                 </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        onChange={handleChange}
+                        required
+                        fullWidth
+                        name="confirm-password"
+                        label="Confirm Password"
+                        type="password"
+                        id="confirm-password"
+                    />
+                </Grid>
                 </Grid>
                 <Button
                     type='submit'
                     fullWidth
-                    variant='contained'
+                    variant='outlined'
                     color='primary'
                     className={classes.submit}
+                    style={{marginTop: '3em'}}
                 >
-                    Sign-up
+                    Create Account
                 </Button>
-                
+                { error &&
+                  <p style={{color: 'orangered'}}>
+                  {error}
+                  </p>
+                }
+
             </div>
         </form>
         </Paper>
-    </Container>     
+    </Container>
   );
 }

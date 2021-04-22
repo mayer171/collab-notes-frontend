@@ -37,7 +37,7 @@ const SlateEditor = (props) => {
   const [value, setValue] = useState(props.content || defaultContent);
 
   const connectionString = () => {
-    return `ws://localhost:3001/docID=${props.docID}/edID=${editorID}`;
+    return `${process.env.REACT_APP_WS_CONNECT}/docID=${props.docID}/edID=${editorID}`;
   }
 
 

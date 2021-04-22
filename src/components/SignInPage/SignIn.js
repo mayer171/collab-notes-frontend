@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -15,7 +15,7 @@ import { LogIn } from '../../helpers/userSessionHelpers';
 const useStyles = makeStyles((theme) => ({
     card: {
         marginTop: theme.spacing(8),
-        padding: '10px'
+        padding: theme.spacing(4)
     },
     paper: {
         marginTop: theme.spacing(8),
@@ -37,6 +37,7 @@ export default function SignIn(props) {
 const classes = useStyles();
 const username = useRef('')
 const password = useRef('')
+const [ error, setError ] = useState('')
 
 function handleChange(e) {
     if(e.target.id === 'username'){
@@ -44,7 +45,7 @@ function handleChange(e) {
     } else if(e.target.id === 'password'){
         password.current = e.target.value
     }
-    
+
 }
 function handleSubmit(e) {
     e.preventDefault();
@@ -56,19 +57,21 @@ function handleSubmit(e) {
         .then( res => {
             if(res.success){
                 props.setUser(true, creds.username)
+            } else {
+              setError(res.message)
             }
         })
 }
   return (
     <Container component='main' maxWidth='xs'>
-        
-        <Paper className={classes.card} elevation={3}>
-        <Typography component='h1'>
-            Sign In
+
+        <Paper className={classes.card} elevation={2}>
+        <Typography variant='h4' style={{paddingTop: '1em'}}>
+            Log In
         </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
             <div className={classes.paper}>
-                <Grid container spacing={2}>
+                <Grid container spacing={4}>
                     <Grid item xs={12}>
                         <TextField
                             onChange={handleChange}
@@ -91,21 +94,27 @@ function handleSubmit(e) {
                         />
                     </Grid>
                 </Grid>
-                
+
                 <Button
                     type='submit'
                     fullWidth
-                    variant='contained'
+                    variant='outlined'
                     color='primary'
                     className={classes.submit}
+                    style={{marginTop: '3em'}}
                 >
-                    Sign-In
+                    Log In
                 </Button>
+                { error &&
+                  <p style={{color: 'orangered'}}>
+                  {error}
+                  </p>
+                }
 
             </div>
         </form>
         </Paper>
-        
+
     </Container>
   );
 }
