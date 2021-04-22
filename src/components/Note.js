@@ -7,65 +7,105 @@ import AddCollabsPopover from './AddCollabsPopover'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import SlateEditor from './SlateEditor'
+import { GetNote, UpdateNote } from '../helpers/noteHelpers'
+import EditableTitle from './EditableTitle';
 
 const styles = theme => ({
-    
+
     toolbar: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between'
 
     },
-    note: {
+    note : {
         margin: '10px'
+    },
+    title : {
+      fontSize: '2rem',
+      fontWeight: 'bold',
+      border: 'none',
+      width: '100%',
+      boxSizing: 'border-box',
+      textAlign: 'left',
+      padding: '0.5em 1rem 0 1rem',
     }
-}) 
+})
 
 class MainNote extends Component {
     constructor(props){
         super(props);
         this.state = {
+            _id: '',
             title: '',
-            text: '',
+            content: '',
             owner: '',
             authorizedEditors: [],
             createdAt: null,
             editedAt: null,
+            renderEditor: false,
         };
-        this.handleSaveSubmit = this.handelSubmit.bind(this);
+        this.handleSaveNote = this.handleSaveNote.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
-    
+
     handleChange(e) {
         console.log(e.target)
         this.setState({value: e.target.value})
     }
 
-    //Update route 
-    handelSubmit(e) {
-        e.preventDefault();
+    //Update route
+    handleSaveNote(e) {
+      console.log('submit')
+        UpdateNote(this.props.noteID, {title: this.state.title}).then(res => {
+            if(res.success) {
+              console.log(res);
+            }
+        })
     }
-    
-    
+
+    titleChange = (e) => {
+        this.setState({
+          title: e.target.value,
+        })
+    }
+
+    componentDidMount() {
+        GetNote(this.props.noteID).then(res =>{
+            if (res.success) {
+              this.setState({
+                _id: res.data._id,
+                title: res.data.title,
+                owner: res.data.owner,
+                authorizedEditors: res.data.authorizedEditors,
+                content: JSON.parse(res.data.content),
+                renderEditor: true,
+              })
+            }
+        })
+    }
+
+
     render() {
         const { classes } = this.props;
         return (
-            <Container className={classes.note} maxWidth='sm'> 
+            <Container className={classes.note} maxWidth='sm'>
                 <form onSubmit={this.handleSubmit}>
                     <Paper className={classes.paper}>
                         <AppBar position="static">
                             <Toolbar variant='dense' className={classes.toolbar}>
-                                <AddCollabsPopover />
-                                <Button  variant="contained" color="primary"> Save Note</Button>
+                                <AddCollabsPopover noteID={this.props.noteID}/>
+                                <Button  variant="contained" color="primary" onClick={this.handleSaveNote}> Save Note</Button>
                             </Toolbar>
                         </AppBar>
-                        <SlateEditor />
+                        { this.state.renderEditor && <EditableTitle title={this.state.title} handleChange={this.titleChange} class={classes.title}/>}
+                        { this.state.renderEditor && <SlateEditor docID={this.props.noteID} content={this.state.content}/> }
                     </Paper>
                 </form>
             </Container>
         )
-    }   
+    }
 }
 
 export default withStyles(styles, {withTheme: true})(MainNote)

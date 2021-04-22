@@ -12,7 +12,13 @@ import { createEditor, Editor } from 'slate';
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react';
 
+const defaultContent = [{
+    type: 'paragraph',
+    children: [{ text: 'A fresh note...' }],
+}]
 
+// Make a random ID for each editor instance -- for controlling
+// "rooms" on the server side
 const editorID = `${Math.trunc(Date.now() * Math.random() * 500)}`.substring(-8);
 
 const documentID = "60778ef8f7c26040fd6de5e1";
@@ -28,15 +34,10 @@ const SlateEditor = (props) => {
 
   // This is the initial value of the Editor -- this can be passed from
   // parent as props
-  const [value, setValue] = useState([
-    {
-      type: 'paragraph',
-      children: [{ text: 'TEST...' }],
-    },
-  ]);
+  const [value, setValue] = useState(props.content || defaultContent);
 
   const connectionString = () => {
-    return `ws://localhost:3001/` + `docID=${documentID}/` + `edID=${editorID}`;
+    return `ws://localhost:3001/docID=${props.docID}/edID=${editorID}`;
   }
 
 
@@ -122,16 +123,23 @@ const SlateEditor = (props) => {
 
   return (
 
-    <div style = {{textAlign: "left", background: "#eee", padding: "1em", width: "100%", height: "100%"  }}>
-    <Slate
-    editor={editor}
-    value={value}
-    onChange={(newValue) => {
-      local.current ? handleLocalChange(newValue) : handleRemoteChange(newValue);
-    }}
-    >
-      <Editable />
-    </Slate>
+    <div style = {{
+      boxSizing: 'border-box',
+      textAlign: "left",
+      background: "white",
+      padding: "1em",
+      width: "100%",
+      height: "100%"
+    }}>
+      <Slate
+        editor={editor}
+        value={value}
+        onChange={(newValue) => {
+          local.current ? handleLocalChange(newValue) : handleRemoteChange(newValue);
+        }}
+      >
+        <Editable />
+      </Slate>
     </div>
   )
 }
