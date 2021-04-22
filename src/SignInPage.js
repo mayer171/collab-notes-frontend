@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import SignIn from './components//SignInPage/SignIn'
-import SignUp from './components/SignInPage/SignUp'
+import SignUpForm from './components/SignInPage/SignUp'
 import SignInHeader from './components/SignInPage/SignInHeader'
 import './App.css';
 
@@ -35,7 +35,7 @@ render(){
     />
     
       {this.state.inSignUpState 
-      ?<SignUp 
+      ?<SignUpForm
         setUser = {this.props.setUser}  
       />
       :<SignIn 

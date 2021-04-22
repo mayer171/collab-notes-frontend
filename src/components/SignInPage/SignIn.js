@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -7,6 +7,7 @@ import Container from '@material-ui/core/Container';
 import { Button } from '@material-ui/core';
 import { Paper } from '@material-ui/core';
 import { LogIn } from '../../helpers/userSessionHelpers';
+
 
 
 
@@ -31,26 +32,25 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-let username = ''
-let password = ''
 export default function SignIn(props) {
 //Use Styles
 const classes = useStyles();
+const username = useRef('')
+const password = useRef('')
 
 function handleChange(e) {
     if(e.target.id === 'username'){
-        username = e.target.value
+        username.current = e.target.value
     } else if(e.target.id === 'password'){
-        password = e.target.value
+        password.current = e.target.value
     }
     
 }
 function handleSubmit(e) {
     e.preventDefault();
     const creds = {
-        username: username,
-        password: password
+        username: username.current,
+        password: password.current
     }
     LogIn(creds)
         .then( res => {

@@ -40,4 +40,11 @@ const CheckIn = async (body, baseUrl = process.env.REACT_APP_BACKEND_URL) => {
   return await parseRes(response);
 }
 
-export { LogIn, SignUp, CheckIn }
+const LogOut = async (baseUrl = process.env.REACT_APP_BACKEND_URL) => {
+  const route = baseUrl + 'sessions/';
+  const request = buildReq(null, 'DELETE');
+  const response = await fetch(route, request);
+  return await parseRes(response);
+}
+
+export { LogIn, SignUp, CheckIn, LogOut }

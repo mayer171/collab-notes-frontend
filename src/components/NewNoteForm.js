@@ -24,15 +24,12 @@ class NewNoteForm extends Component{
         this.handleSubmit = this.handleSubmit.bind(this)
     }
     handleChange(e) {
-        console.log(e.target.value)
         this.setState({
             title: e.target.value
         })
     }
 
     handleSubmit(e){
-        console.log(this.state.title)
-        e.preventDefault()
         const newNote = {
             title: this.state.title
         }
@@ -46,6 +43,7 @@ class NewNoteForm extends Component{
             title: '',
         })
     }
+
     render () {
         return(
             <form onSubmit={(e)=>this.handleSubmit(e)}>

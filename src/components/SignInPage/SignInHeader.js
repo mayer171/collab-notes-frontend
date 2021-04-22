@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignInHeader(props){
     const classes = useStyles()
     let buttonText = ''
-    if(props.signInState !== 'true'){
+    if(props.signInState === true){
         buttonText = 'Log In'
     } else {
         buttonText = 'Sign Up'

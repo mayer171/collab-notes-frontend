@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddCollabsPopover() {
+export default function AddCollabsPopover(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -44,7 +44,9 @@ export default function AddCollabsPopover() {
           horizontal: 'center',
         }}
       >
-        <AddCollabForm />
+        <AddCollabForm 
+         noteID={props.noteID}
+        />
       </Popover>
     </div>
   );

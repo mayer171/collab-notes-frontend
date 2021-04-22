@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Input } from '@material-ui/core'
 import { withStyles } from '@material-ui/core'
 import { Button } from '@material-ui/core'
+import { AddCollaborator } from '../helpers/noteHelpers'
 
 const styles = theme => ({
     textarea: {
@@ -25,27 +26,21 @@ class AddCollabForm extends Component{
     handleChange(e) {
         console.log(e.target.value)
         this.setState({
-            title: e.target.value
+            addedCollab: e.target.value
         })
     }
 
     //TODO Set other properties here 
     handleSubmit(e){
-        console.log(this.props.baseUrl)
         e.preventDefault()
-        fetch(this.props.baseUrl, {
-            method: 'POST',
-            body: JSON.stringify({authorizedEditors: this.state.authorizedEditors}),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then( res => {
-            return res.json()
-        }).then( data => {
-            this.setState({
-                title: '',
-            })
-        }).catch(error => console.error({'Error': error}))
+        console.log(this.props.noteID)
+        AddCollaborator(this.props.noteID, this.state.addedCollab)
+        .then(res => {
+            console.log(res)
+        })
+        this.setState({
+            addedCollab: ''
+        })
     }
     render () {
         return(

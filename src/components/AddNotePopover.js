@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddNotePopover() {
+export default function AddNotePopover(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -46,7 +46,9 @@ export default function AddNotePopover() {
         }}
       >
         <Paper elevation={3} className={classes.form}>
-            <NewNoteForm />
+            <NewNoteForm 
+              noteID = {props.noteID}
+            />
         </Paper>
       </Popover>
     </div>

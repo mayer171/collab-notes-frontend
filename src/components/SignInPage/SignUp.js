@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Button } from '@material-ui/core';
 import { Paper } from '@material-ui/core';
+import { SignUp } from '../../helpers/userSessionHelpers'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,15 +30,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function SignUp() {
+export default function SignUpForm(props) {
   const classes = useStyles();
+  const username = useRef('')
+  const password = useRef('')
 
 function handleChange(e) {
-    console.log(e.target.value)
+    if(e.target.id === 'username'){
+        username.current = e.target.value
+    } else if(e.target.id === 'password'){
+        password.current = e.target.value
+    }
 }
 function handleSubmit(e) {
     e.preventDefault();
-    alert('Saving State to Mongo...(not really)')
+    const creds = {
+        username: username.current,
+        password: password.current
+    }
+    SignUp(creds)
+        .then( res => {
+            if(res.success){
+                props.setUser(true, creds.username)
+            }
+        })
 }
   return (
     <Container component='main' maxWidth='xs'>

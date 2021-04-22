@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import UserPage from './UserPage'
 import SignInPage from './SignInPage'
 import Header from './components/Header'
+import { CheckIn } from './helpers/userSessionHelpers'
+import { LogOut } from './helpers/userSessionHelpers'
 import './App.css';
 
 
@@ -28,13 +30,20 @@ if (process.env.NODE_ENV === 'development') {
      })
     }
     signOut = () => {
+      LogOut()
       this.setState({
         isLoggedIn: false,
         currentUser: ''
 
       })
     }
-    
+    componentDidMount(){
+      CheckIn()
+      .then(res => {
+        this.setGlobalUser(!! res.currentUser, res.currentUser)
+      })
+    }
+
   render(){
     const isLoggedIn = this.state.isLoggedIn
     return (

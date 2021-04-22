@@ -44,6 +44,7 @@ class MainNote extends Component {
             createdAt: null,
             editedAt: null,
             renderEditor: false,
+            isAuthor: false,
         };
         this.handleSaveNote = this.handleSaveNote.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -74,14 +75,18 @@ class MainNote extends Component {
     componentDidMount() {
         GetNote(this.props.noteID).then(res =>{
             if (res.success) {
-              this.setState({
-                _id: res.data._id,
-                title: res.data.title,
-                owner: res.data.owner,
-                authorizedEditors: res.data.authorizedEditors,
-                content: JSON.parse(res.data.content),
-                renderEditor: true,
-              })
+                const newState = {
+                    _id: res.data._id,
+                    title: res.data.title,
+                    owner: res.data.owner,
+                    authorizedEditors: res.data.authorizedEditors,
+                    renderEditor: true,
+                    isAuthor: (res.currentUser === res.data.owner)
+                  } 
+                  if(res.data.content){
+                      newState.content = JSON.parse(res.data.content)
+                  } else {newState.content = null}
+              this.setState(newState)
             }
         })
     }
@@ -95,7 +100,11 @@ class MainNote extends Component {
                     <Paper className={classes.paper}>
                         <AppBar position="static">
                             <Toolbar variant='dense' className={classes.toolbar}>
-                                <AddCollabsPopover noteID={this.props.noteID}/>
+                                {this.state.isAuthor
+                                ?<AddCollabsPopover noteID={this.props.noteID}/>
+                                :<div></div>
+                                }
+                                
                                 <Button  variant="contained" color="primary" onClick={this.handleSaveNote}> Save Note</Button>
                             </Toolbar>
                         </AppBar>
