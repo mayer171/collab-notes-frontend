@@ -49,6 +49,7 @@ export default function AddNotePopover(props) {
         <Paper elevation={3} className={classes.form}>
             <NewNoteForm 
               noteID = {props.noteID}
+              submitNote = {props.submitNote}
             />
         </Paper>
       </Popover>

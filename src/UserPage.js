@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Note from './components/Note'
 import { withStyles } from '@material-ui/core'
-import { GetUserOwnNotes, GetUserSharedNotes, DeleteNote } from './helpers/noteHelpers'
+import { GetUserOwnNotes, GetUserSharedNotes, DeleteNote, PostNote } from './helpers/noteHelpers'
 import { Button } from '@material-ui/core'
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -14,7 +14,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import NoteIcon from '@material-ui/icons/Note';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { ClickAwayListener} from '@material-ui/core'
+import { ClickAwayListener} from '@material-ui/core';
+import { Box } from '@material-ui/core'
+import AddNotePopover from './components/AddNotePopover';
+
 
 const styles = theme => ({
     list: {
@@ -37,12 +40,16 @@ const styles = theme => ({
         flexGrow: 1,
         maxWidth: 752,
       },
-      demo: {
-        backgroundColor: theme.palette.background.paper,
-      },
-      title: {
+     
+    title: {
         margin: theme.spacing(2, 0, 2),
-      },
+    },
+    add: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        margin: '10px'
+    }
+
     
 })
 
@@ -108,11 +115,36 @@ class UserPage extends Component{
             }
         })
     }
+    handleNewNoteSubmit = (e, title) => {
+        const newNote = {
+            title: title
+        }
+        
+        PostNote(newNote)
+            .then(res => {
+                if(res.success){
+                    console.log(this.state)
+                    const newNote = res.data
+                    const userNoteCopy = [...this.state.userNotes]
+                    userNoteCopy.unshift(newNote)
+                    this.setState({
+                        userNotes: userNoteCopy
+                    })
+                }
+            }
+        )  
+    }
 
     render(){
         const { classes } = this.props
         return(
-            <div>
+            <div> 
+                <div className={classes.add}>
+                <Box>
+                <AddNotePopover 
+                submitNote={this.handleNewNoteSubmit}/>
+                </Box>
+                </div>
                 {this.state.noteSelected
                     ? 
                     <ClickAwayListener onClickAway={this.handelClickAway}>

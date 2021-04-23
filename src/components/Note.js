@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import SlateEditor from './SlateEditor'
 import { GetNote, UpdateNote } from '../helpers/noteHelpers'
 import EditableTitle from './EditableTitle';
+import { AddCollaborator, RemoveCollaborator } from '../helpers/noteHelpers'
 
 const styles = theme => ({
 
@@ -90,6 +91,30 @@ class MainNote extends Component {
             }
         })
     }
+    handleCollabSubmit = (e, name) =>{
+        e.preventDefault()
+        AddCollaborator(this.props.noteID, name)
+        .then(res => {
+            if(res.success){
+                const newCollabs = [...this.state.authorizedEditors]
+                newCollabs.push(name)
+                this.setState({
+                    authorizedEditors: newCollabs
+                })
+            }
+        })
+    }
+
+    handleCollabDelete = (noteID, username) =>{
+        RemoveCollaborator(noteID, username)
+        .then(res => {
+            if(res.success){
+                this.setState({
+                    authorizedEditors: (this.state.authorizedEditors.filter( x => x !== username))
+                })
+            }
+        })
+    }
 
     render() {
         const { classes } = this.props;
@@ -103,7 +128,9 @@ class MainNote extends Component {
                                 ?
                                     <AddCollabsPopover 
                                         noteID={this.props.noteID}
-                                        collaborators={this.props.collaborators}
+                                        collaborators={this.state.authorizedEditors}
+                                        addCollab={this.handleCollabSubmit}
+                                        deleteCollab={this.handleCollabDelete}
                                         />
                                 :
                                     <div></div>
