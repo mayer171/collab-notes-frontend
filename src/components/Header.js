@@ -1,5 +1,4 @@
 import React from 'react'
-import AddNotePopover from './AddNotePopover'
 import { AppBar } from '@material-ui/core'
 import { Toolbar } from '@material-ui/core'
 import { Button } from '@material-ui/core'
@@ -26,9 +25,7 @@ export default function Header(props){
             <Box>
                 <Typography> Collab-Notes</Typography>
             </Box>
-            <Box>
-                <AddNotePopover />
-            </Box>
+            
             <Box>
                 <Button color="inherit" onClick={()=>props.signOut()}> Log Out</Button>
             </Box>

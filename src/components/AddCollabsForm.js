@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Input } from '@material-ui/core'
 import { withStyles } from '@material-ui/core'
 import { Button } from '@material-ui/core'
-import { AddCollaborator, RemoveCollaborator } from '../helpers/noteHelpers'
+
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -31,10 +31,8 @@ class AddCollabForm extends Component{
         this.state = {
             addedCollab: '',
         }
-        this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
     }
-    handleChange(e) {
+    handleChange = (e) => {
         console.log(e.target.value)
         this.setState({
             addedCollab: e.target.value
@@ -42,28 +40,14 @@ class AddCollabForm extends Component{
     }
 
     //TODO Set other properties here 
-    handleSubmit(e){
-        e.preventDefault()
-        AddCollaborator(this.props.noteID, this.state.addedCollab)
-        .then(res => {
-            console.log(res)
-        })
-        this.setState({
-            addedCollab: ''
-        })
-    }
-    handleDelete(noteID, username){
-        RemoveCollaborator(noteID, username)
-        .then(res => {
-            console.log(res)
-        })
-    }
+    
+   
 
     render () {
         return(
             <div>
-                <form onSubmit={(e)=>this.handleSubmit(e)}>
-                    <Input placeholder='Enter Collaborator' type='text' id='addedCollab' name='addedCollab' onChange={(e)=>this.handleChange(e)} value={this.state.title} ></Input>
+                <form onSubmit={(e)=>this.props.addCollab(e, this.state.addedCollab)}>
+                    <Input placeholder='Enter Collaborator' type='text' id='addedCollab' name='addedCollab' onChange={this.handleChange} value={this.state.title} ></Input>
                     <Button type='submit'>Add</Button>
                 </form>
                 <Grid item xs={12} md={6}>
@@ -71,13 +55,13 @@ class AddCollabForm extends Component{
                         <List>
                             {this.props.collaborators.map(collab=> {
                             return(
-                            <ListItem>
+                            <ListItem> 
                             <ListItemAvatar>
                                 <AccountCircleIcon/>
                             </ListItemAvatar>
                             <ListItemText primary={collab}/>
                             <ListItemSecondaryAction >
-                                <IconButton onClick={()=>this.handleDelete(this.props.noteID, collab)} edge="end" aria-label="delete">
+                                <IconButton onClick={()=>this.props.deleteCollab(this.props.noteID, collab)} edge="end" aria-label="delete">
                                 <DeleteIcon fontSize='small' />
                                 </IconButton>
                             </ListItemSecondaryAction>

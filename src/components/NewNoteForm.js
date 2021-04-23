@@ -21,7 +21,6 @@ class NewNoteForm extends Component{
             title: '',
         }
         this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
     }
     handleChange(e) {
         this.setState({
@@ -29,24 +28,11 @@ class NewNoteForm extends Component{
         })
     }
 
-    handleSubmit(e){
-        const newNote = {
-            title: this.state.title
-        }
-        PostNote(newNote)
-            .then(res => {
-                if(res){
-                    console.log(res)
-                }
-            })
-        this.setState({
-            title: '',
-        })
-    }
-
     render () {
         return(
-            <form onSubmit={(e)=>this.handleSubmit(e)}>
+            <form onSubmit={(e)=>{
+                e.preventDefault()
+                this.props.submitNote(e, this.state.title)}}>
                 <Input placeholder='Enter Note Title' type='text' id='title' name='title' onChange={(e)=>this.handleChange(e)} value={this.state.title} ></Input>
                 <Button type='submit'>Create New Note</Button>
             </form>
