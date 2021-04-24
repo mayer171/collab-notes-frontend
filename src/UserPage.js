@@ -40,7 +40,7 @@ const styles = theme => ({
         flexGrow: 1,
         maxWidth: 752,
       },
-     
+
     title: {
         margin: theme.spacing(2, 0, 2),
     },
@@ -50,7 +50,7 @@ const styles = theme => ({
         margin: '10px'
     }
 
-    
+
 })
 
 class UserPage extends Component{
@@ -119,7 +119,7 @@ class UserPage extends Component{
         const newNote = {
             title: title
         }
-        
+
         PostNote(newNote)
             .then(res => {
                 if(res.success){
@@ -132,30 +132,37 @@ class UserPage extends Component{
                     })
                 }
             }
-        )  
+        )
+    }
+
+    updateNoteTitle = (id, title) => {
+      const userNotesCopy = [...this.state.userNotes];
+      userNotesCopy[userNotesCopy.findIndex(x => x._id === id)].title = title;
+      this.setState({userNotes: userNotesCopy});
     }
 
     render(){
         const { classes } = this.props
         return(
-            <div> 
+            <div>
                 <div className={classes.add}>
                 <Box>
-                <AddNotePopover 
+                <AddNotePopover
                 submitNote={this.handleNewNoteSubmit}/>
                 </Box>
                 </div>
                 {this.state.noteSelected
-                    ? 
+                    ?
                     <ClickAwayListener onClickAway={this.handelClickAway}>
-                        <div className={classes.note}> 
+                        <div className={classes.note}>
                             <Note
                                 noteID = {this.state.selectedNoteId}
                                 collaborators = {this.state.selectedNoteCollabs}
+                                updateNoteTitle = {this.updateNoteTitle}
                             />
                         </div>
                     </ClickAwayListener>
-                    : 
+                    :
                     <div className={classes.list}>
                         <Grid item xs={12} md={6}>
                             <Typography variant="h5" className={classes.title}>
@@ -165,7 +172,7 @@ class UserPage extends Component{
                                 <List>
                                     {this.state.userNotes.map(note => {
                                     return(
-                                    <ListItem>
+                                    <ListItem key={note._id}>
                                     <ListItemAvatar>
                                         <Avatar>
                                             <NoteIcon />
@@ -201,7 +208,7 @@ class UserPage extends Component{
                                     <Button onClick={ () => this.handleNoteClick(note._id)}>
                                         <ListItemText primary={note.title}/>
                                     </Button>
-                                    <ListItemSecondaryAction> 
+                                    <ListItemSecondaryAction>
                                     </ListItemSecondaryAction>
                                     </ListItem>
                                     )})}
@@ -216,5 +223,3 @@ class UserPage extends Component{
 }
 
 export default withStyles(styles, {withTheme: true})(UserPage)
-
-

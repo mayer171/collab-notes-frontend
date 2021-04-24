@@ -61,8 +61,10 @@ class MainNote extends Component {
     handleSaveNote(e) {
       console.log('submit')
         UpdateNote(this.props.noteID, {title: this.state.title}).then(res => {
-            if(res.success) {
+            if (res.success) {
+              this.props.updateNoteTitle(this.props.noteID, this.state.title)
               console.log(res);
+
             }
         })
     }
@@ -83,7 +85,7 @@ class MainNote extends Component {
                     authorizedEditors: res.data.authorizedEditors,
                     renderEditor: true,
                     isAuthor: (res.currentUser === res.data.owner)
-                  } 
+                  }
                   if(res.data.content){
                       newState.content = JSON.parse(res.data.content)
                   } else {newState.content = null}
@@ -126,7 +128,7 @@ class MainNote extends Component {
                             <Toolbar variant='dense' className={classes.toolbar}>
                                 {this.state.isAuthor
                                 ?
-                                    <AddCollabsPopover 
+                                    <AddCollabsPopover
                                         noteID={this.props.noteID}
                                         collaborators={this.state.authorizedEditors}
                                         addCollab={this.handleCollabSubmit}
